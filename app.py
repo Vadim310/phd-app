@@ -9,6 +9,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_absolute_error
 import warnings
+AXIS_STYLE = dict(
+    showgrid=True,
+    gridcolor="rgba(200,200,200,0.15)",
+    zeroline=False,
+    showline=False,
+    ticks="outside",
+)
 warnings.filterwarnings('ignore')
 
 # ─── Page config ────────────────────────────────────────────────────────────
