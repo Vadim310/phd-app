@@ -360,11 +360,11 @@ PLOT_LAYOUT = dict(
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)',
     font=dict(family='Syne', color='#5a5f78', size=12),
-    xaxis=dict(gridcolor='#1e2130', zerolinecolor='#1e2130', showline=False),
-    yaxis=dict(gridcolor='#1e2130', zerolinecolor='#1e2130', showline=False),
     margin=dict(t=30, b=20, l=10, r=10),
-
 )
+
+# Default axis style — apply manually per chart to avoid conflicts
+AXIS = dict(gridcolor='#1e2130', zerolinecolor='#1e2130', showline=False)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -426,7 +426,8 @@ if page == "📊 Overview":
                         box=True, points=False,
                         color_discrete_sequence=["#00e5ff","#0099ff","#7c3aed","#ff6b35","#ff2d78"])
         fig.update_layout(**PLOT_LAYOUT, height=280,
-                          xaxis_title="Laser Power Range", yaxis_title="Ra X (µm)",
+                          xaxis=dict(**AXIS_STYLE, title="Laser Power Range"),
+                          yaxis=dict(**AXIS_STYLE, title="Ra X (µm)"),
                           showlegend=False)
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
 
@@ -451,8 +452,8 @@ if page == "📊 Overview":
                         showscale=False)
         ))
         fig2.update_layout(**PLOT_LAYOUT, height=280,
-                           xaxis_title="Importance", yaxis_title="",
-                           yaxis=dict(gridcolor='#1e2130', categoryorder='total ascending'))
+                           xaxis=dict(**AXIS_STYLE, title="Importance"),
+                           yaxis=dict(**AXIS_STYLE, title="", categoryorder="total ascending"))
         st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
 
     # Energy input vs Ra scatter
@@ -466,7 +467,7 @@ if page == "📊 Overview":
                       labels={"energy_input": "Energy Input (a.u.)", "Ra_x_um": "Ra X (µm)",
                                "structure_type": "Surface Structure"})
     fig3.update_traces(marker=dict(size=5))
-    fig3.update_layout(**PLOT_LAYOUT, height=300)
+    fig3.update_layout(**PLOT_LAYOUT, height=300, xaxis=AXIS_STYLE, yaxis=AXIS_STYLE)
     st.plotly_chart(fig3, use_container_width=True, config={"displayModeBar": False})
 
 
@@ -504,7 +505,7 @@ elif page == "🔬 Process Explorer":
                      labels={x_param: x_param.replace("_"," "), y_param: y_param.replace("_"," "),
                               color_by: color_labels[color_by]})
     fig.update_traces(marker=dict(size=5))
-    fig.update_layout(**PLOT_LAYOUT, height=420,
+    fig.update_layout(**PLOT_LAYOUT, xaxis=AXIS_STYLE, yaxis=AXIS_STYLE, height=420,
                       coloraxis_colorbar=dict(title=color_labels[color_by],
                                                tickfont=dict(color='#5a5f78', size=10)))
     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
@@ -520,7 +521,7 @@ elif page == "🔬 Process Explorer":
         colorscale=[[0,'#ff2d78'],[0.5,'#1e2130'],[1,'#00e5ff']],
         zmid=0, text=corr.round(2).values, texttemplate="%{text}",
         textfont=dict(size=10, color='#e8eaf2')))
-    fig_h.update_layout(**PLOT_LAYOUT, height=360)
+    fig_h.update_layout(**PLOT_LAYOUT, height=360, xaxis=AXIS_STYLE, yaxis=AXIS_STYLE)
     st.plotly_chart(fig_h, use_container_width=True, config={"displayModeBar": False})
 
 
@@ -673,7 +674,8 @@ elif page == "🤖 ML Optimizer":
         mode='markers', name='Real (dissertation)',
         marker=dict(size=10, color='#00ff88', symbol='star', line=dict(color='white', width=1))))
     fig_eval.update_layout(**PLOT_LAYOUT, height=320,
-                           xaxis_title="Actual Ra X (µm)", yaxis_title="Predicted Ra X (µm)")
+                           xaxis=dict(**AXIS_STYLE, title="Actual Ra X (µm)"),
+                           yaxis=dict(**AXIS_STYLE, title="Predicted Ra X (µm)"))
     st.plotly_chart(fig_eval, use_container_width=True, config={"displayModeBar": False})
 
 
@@ -720,8 +722,8 @@ elif page == "📈 Parameter Study":
                     annotation_position="top left",
                     annotation_font=dict(color="#00ff88", size=11))
     fig_s.update_layout(**PLOT_LAYOUT, height=360,
-                        xaxis_title=param.replace("_", " "),
-                        yaxis_title="Predicted Ra (µm)")
+                        xaxis=dict(**AXIS_STYLE, title=param.replace("_", " ")),
+                        yaxis=dict(**AXIS_STYLE, title="Predicted Ra (µm)"))
     st.plotly_chart(fig_s, use_container_width=True, config={"displayModeBar": False})
 
     # Key insights
@@ -773,8 +775,8 @@ elif page == "📈 Parameter Study":
         colorbar=dict(title="Ra (µm)", tickfont=dict(color='#5a5f78', size=10))
     ))
     fig_2d.update_layout(**PLOT_LAYOUT, height=360,
-                         xaxis_title=p2.replace("_", " "),
-                         yaxis_title=p1.replace("_", " "))
+                         xaxis=dict(**AXIS_STYLE, title=p2.replace("_", " ")),
+                         yaxis=dict(**AXIS_STYLE, title=p1.replace("_", " ")))
     st.plotly_chart(fig_2d, use_container_width=True, config={"displayModeBar": False})
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -853,7 +855,8 @@ elif page == "🧪 PhD Experimental Data":
             opacity=0.45
         ))
         fig_ra.update_layout(**PLOT_LAYOUT, height=300, barmode='group',
-                             yaxis_title="Ra (µm)", xaxis_title="Position",
+                             xaxis=dict(**AXIS_STYLE, title="Position"),
+                             yaxis=dict(**AXIS_STYLE, title="Ra (µm)"),
                              showlegend=True)
         fig_ra.update_layout(legend=dict(orientation='h', y=1.1, bgcolor='rgba(0,0,0,0)', font=dict(size=11)))
         st.plotly_chart(fig_ra, use_container_width=True, config={"displayModeBar": False})
@@ -869,7 +872,8 @@ elif page == "🧪 PhD Experimental Data":
                 opacity=opacity
             ))
         fig_3d.update_layout(**PLOT_LAYOUT, height=300, barmode='group',
-                             yaxis_title="µm", xaxis_title="Position",
+                             xaxis=dict(**AXIS_STYLE, title="Position"),
+                             yaxis=dict(**AXIS_STYLE, title="µm"),
                              showlegend=True)
         fig_3d.update_layout(legend=dict(orientation='h', y=1.1, bgcolor='rgba(0,0,0,0)', font=dict(size=11)))
         st.plotly_chart(fig_3d, use_container_width=True, config={"displayModeBar": False})
@@ -886,7 +890,7 @@ elif page == "🧪 PhD Experimental Data":
             textposition='outside', textfont=dict(color='#e8eaf2', size=11)
         ))
         fig_ssk.add_hline(y=0, line_color='#5a5f78', line_dash='dash', line_width=1)
-        fig_ssk.update_layout(**PLOT_LAYOUT, height=240, yaxis_title="Ssk",
+        fig_ssk.update_layout(**PLOT_LAYOUT, xaxis=AXIS_STYLE, height=240,
                               showlegend=False,
                               annotations=[dict(text="↑ peaks dominant", x=0.01, y=0.95,
                                                 xref='paper', yref='paper', showarrow=False,
@@ -907,7 +911,7 @@ elif page == "🧪 PhD Experimental Data":
         fig_sku.add_hline(y=3, line_color='#ff6b35', line_dash='dash', line_width=1,
                           annotation_text="Normal dist (Sku=3)",
                           annotation_font=dict(color='#ff6b35', size=10))
-        fig_sku.update_layout(**PLOT_LAYOUT, height=240, yaxis_title="Sku", showlegend=False)
+        fig_sku.update_layout(**PLOT_LAYOUT, xaxis=AXIS_STYLE, yaxis=dict(**AXIS_STYLE, title="Sku"), height=240, showlegend=False)
         st.plotly_chart(fig_sku, use_container_width=True, config={"displayModeBar": False})
 
     with col_c:
@@ -918,7 +922,7 @@ elif page == "🧪 PhD Experimental Data":
             text=[f'{v:.2f}%' for v in REAL_EXPERIMENTS['Sdr_pct']],
             textposition='outside', textfont=dict(color='#e8eaf2', size=11)
         ))
-        fig_sdr.update_layout(**PLOT_LAYOUT, height=240, yaxis_title="Sdr (%)", showlegend=False)
+        fig_sdr.update_layout(**PLOT_LAYOUT, xaxis=AXIS_STYLE, yaxis=dict(**AXIS_STYLE, title="Sdr (%)"), height=240, showlegend=False)
         st.plotly_chart(fig_sdr, use_container_width=True, config={"displayModeBar": False})
 
     # ── Hardness ──
@@ -944,8 +948,9 @@ elif page == "🧪 PhD Experimental Data":
         showarrow=True, arrowhead=2, arrowcolor='#ff6b35',
         font=dict(color='#ff6b35', size=10), ax=40, ay=-30
     )
-    fig_hv.update_layout(**PLOT_LAYOUT, height=280, yaxis_title="Hardness (HV)",
-                         yaxis=dict(range=[160, 210], gridcolor='#1e2130'),
+    fig_hv.update_layout(**PLOT_LAYOUT, height=280,
+                         xaxis=AXIS_STYLE,
+                         yaxis=dict(**AXIS_STYLE, range=[160, 210], title="Hardness (HV)"),
                          showlegend=False)
     st.plotly_chart(fig_hv, use_container_width=True, config={"displayModeBar": False})
 
@@ -998,4 +1003,3 @@ elif page == "🧪 PhD Experimental Data":
         'HV'
     ]
     st.dataframe(full_table, use_container_width=True, hide_index=True)
-
