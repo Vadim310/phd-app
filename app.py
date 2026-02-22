@@ -1015,18 +1015,18 @@ fig_radar.update_layout(
 
 st.plotly_chart(fig_radar, use_container_width=True, config={"displayModeBar": False})
 
-    # ── Full data table ──
-    st.markdown('<div class="section-title">Complete Measurement Table · Tables 5.7 + 5.8</div>', unsafe_allow_html=True)
-    full_table = REAL_EXPERIMENTS[[
-        'position','label','power_W','scan_speed_mm_s','pulse_freq_kHz',
-        'Sa_um','Sq_um','Ssk','Sku','Sdr_pct','Sdq',
-        'Ra_x_um','Ra_y_um','Rq_x_um','Rq_y_um','Rz_x_um','Rz_y_um',
-        'hardness_HV'
-    ]].copy()
-    full_table.columns = [
-        'Pos','Type','P(W)','v(mm/s)','f(kHz)',
-        'Sa(µm)','Sq(µm)','Ssk','Sku','Sdr(%)','Sdq',
-        'Ra-X','Ra-Y','Rq-X','Rq-Y','Rz-X','Rz-Y',
-        'HV'
-    ]
-    st.dataframe(full_table, use_container_width=True, hide_index=True)
+# ── Full data table ──
+st.markdown('<div class="section-title">Complete Measurement Table · Tables 5.7 + 5.8</div>', unsafe_allow_html=True)
+full_table = REAL_EXPERIMENTS[[
+    'position','label','power_W','scan_speed_mm_s','pulse_freq_kHz',
+    'Sa_um','Sq_um','Ssk','Sku','Sdr_pct','Sdq',
+    'Ra_x_um','Ra_y_um','Rq_x_um','Rq_y_um','Rz_x_um','Rz_y_um',
+    'hardness_HV'
+]].copy()
+full_table.columns = [
+    'Pos','Type','P(W)','v(mm/s)','f(kHz)',
+    'Sa(µm)','Sq(µm)','Ssk','Sku','Sdr(%)','Sdq',
+    'Ra-X','Ra-Y','Rq-X','Rq-Y','Rz-X','Rz-Y',
+    'HV'
+]
+st.dataframe(full_table, use_container_width=True, hide_index=True)
