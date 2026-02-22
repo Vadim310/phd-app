@@ -975,13 +975,13 @@ elif page == "🧪 PhD Experimental Data":
     fig_radar = go.Figure()
 
     # Normalize each parameter 0→1
-    sa_n   = (REAL_EXPERIMENTS['Sa_um']      - REAL_EXPERIMENTS['Sa_um'].min())   / (REAL_EXPERIMENTS['Sa_um'].max()   - REAL_EXPERIMENTS['Sa_um'].min())
-    sdr_n  = (REAL_EXPERIMENTS['Sdr_pct']    - REAL_EXPERIMENTS['Sdr_pct'].min()) / (REAL_EXPERIMENTS['Sdr_pct'].max() - REAL_EXPERIMENTS['Sdr_pct'].min())
-    sdq_n  = (REAL_EXPERIMENTS['Sdq']        - REAL_EXPERIMENTS['Sdq'].min())     / (REAL_EXPERIMENTS['Sdq'].max()     - REAL_EXPERIMENTS['Sdq'].min())
-    rax_n  = (REAL_EXPERIMENTS['Ra_x_um']    - REAL_EXPERIMENTS['Ra_x_um'].min()) / (REAL_EXPERIMENTS['Ra_x_um'].max() - REAL_EXPERIMENTS['Ra_x_um'].min())
-    hv_n   = 1 - (REAL_EXPERIMENTS['hardness_HV'] - REAL_EXPERIMENTS['hardness_HV'].min()) / (REAL_EXPERIMENTS['hardness_HV'].max() - REAL_EXPERIMENTS['hardness_HV'].min())
+sa_n   = (REAL_EXPERIMENTS['Sa_um']      - REAL_EXPERIMENTS['Sa_um'].min())   / (REAL_EXPERIMENTS['Sa_um'].max()   - REAL_EXPERIMENTS['Sa_um'].min())
+sdr_n  = (REAL_EXPERIMENTS['Sdr_pct']    - REAL_EXPERIMENTS['Sdr_pct'].min()) / (REAL_EXPERIMENTS['Sdr_pct'].max() - REAL_EXPERIMENTS['Sdr_pct'].min())
+sdq_n  = (REAL_EXPERIMENTS['Sdq']        - REAL_EXPERIMENTS['Sdq'].min())     / (REAL_EXPERIMENTS['Sdq'].max()     - REAL_EXPERIMENTS['Sdq'].min())
+rax_n  = (REAL_EXPERIMENTS['Ra_x_um']    - REAL_EXPERIMENTS['Ra_x_um'].min()) / (REAL_EXPERIMENTS['Ra_x_um'].max() - REAL_EXPERIMENTS['Ra_x_um'].min())
+hv_n   = 1 - (REAL_EXPERIMENTS['hardness_HV'] - REAL_EXPERIMENTS['hardness_HV'].min()) / (REAL_EXPERIMENTS['hardness_HV'].max() - REAL_EXPERIMENTS['hardness_HV'].min())
 
-    for i, (_, row) in enumerate(REAL_EXPERIMENTS.iterrows()):
+for i, (_, row) in enumerate(REAL_EXPERIMENTS.iterrows()):
     vals = [sa_n.iloc[i], sdr_n.iloc[i], sdq_n.iloc[i], rax_n.iloc[i], hv_n.iloc[i]]
     vals += [vals[0]]  # close loop
 
@@ -995,17 +995,17 @@ elif page == "🧪 PhD Experimental Data":
         opacity=0.8
     ))
 
-fig_radar.update_layout(
-    **{k: v for k, v in PLOT_LAYOUT.items() if k not in ['xaxis', 'yaxis']},
-    height=380,
-    polar=dict(
-        bgcolor='rgba(0,0,0,0)',
-        radialaxis=dict(
-            visible=True,
-            range=[0, 1],
-            gridcolor='#1e2130',
-            tickfont=dict(color='#5a5f78', size=9)
-        ),
+    fig_radar.update_layout(
+        **{k: v for k, v in PLOT_LAYOUT.items() if k not in ['xaxis', 'yaxis']},
+        height=380,
+        polar=dict(
+            bgcolor='rgba(0,0,0,0)',
+            radialaxis=dict(
+                visible=True,
+                range=[0, 1],
+                gridcolor='#1e2130',
+                tickfont=dict(color='#5a5f78', size=9)
+            ),
         angularaxis=dict(
             gridcolor='#1e2130',
             tickfont=dict(color='#e8eaf2', size=11)
