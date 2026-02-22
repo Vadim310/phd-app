@@ -16,6 +16,14 @@ AXIS_STYLE = dict(
     showline=False,
     ticks="outside",
 )
+def hex_to_rgba(hex_color: str, alpha: float = 0.1) -> str:
+    s = str(hex_color).strip()
+    if not s.startswith("#") or len(s) != 7:
+        return s
+    r = int(s[1:3], 16)
+    g = int(s[3:5], 16)
+    b = int(s[5:7], 16)
+    return f"rgba({r},{g},{b},{alpha})"
 warnings.filterwarnings('ignore')
 
 # ─── Page config ────────────────────────────────────────────────────────────
@@ -973,27 +981,39 @@ elif page == "🧪 PhD Experimental Data":
     rax_n  = (REAL_EXPERIMENTS['Ra_x_um']    - REAL_EXPERIMENTS['Ra_x_um'].min()) / (REAL_EXPERIMENTS['Ra_x_um'].max() - REAL_EXPERIMENTS['Ra_x_um'].min())
     hv_n   = 1 - (REAL_EXPERIMENTS['hardness_HV'] - REAL_EXPERIMENTS['hardness_HV'].min()) / (REAL_EXPERIMENTS['hardness_HV'].max() - REAL_EXPERIMENTS['hardness_HV'].min())
 
-    for i, (_, row) in enumerate(REAL_EXPERIMENTS.iterrows()):
-        vals = [sa_n.iloc[i], sdr_n.iloc[i], sdq_n.iloc[i], rax_n.iloc[i], hv_n.iloc[i]]
-        vals += [vals[0]]  # close loop
-        fig_radar.add_trace(go.Scatterpolar(
-            r=vals, theta=categories + [categories[0]],
-            fill='toself', name=row['position'],
-            line=dict(color=row['color']),
-            fillcolor=row['color'].replace('#', 'rgba(').replace(')', ',0.1)') if '#' in row['color'] else row['color'],
-            opacity=0.8
-        ))
-    fig_radar.update_layout(
-        **{k: v for k, v in PLOT_LAYOUT.items() if k not in ['xaxis', 'yaxis']},
-        height=380,
-        polar=dict(
-            bgcolor='rgba(0,0,0,0)',
-            radialaxis=dict(visible=True, range=[0, 1], gridcolor='#1e2130',
-                           tickfont=dict(color='#5a5f78', size=9)),
-            angularaxis=dict(gridcolor='#1e2130', tickfont=dict(color='#e8eaf2', size=11))
+for i, (_, row) in enumerate(REAL_EXPERIMENTS.iterrows()):
+    vals = [sa_n.iloc[i], sdr_n.iloc[i], sdq_n.iloc[i], rax_n.iloc[i], hv_n.iloc[i]]
+    vals += [vals[0]]  # close loop
+
+    fig_radar.add_trace(go.Scatterpolar(
+        r=vals,
+        theta=categories + [categories[0]],
+        fill='toself',
+        name=row['position'],
+        line=dict(color=row['color']),
+        fillcolor=hex_to_rgba(row['color'], 0.1),
+        opacity=0.8
+    ))
+
+fig_radar.update_layout(
+    **{k: v for k, v in PLOT_LAYOUT.items() if k not in ['xaxis', 'yaxis']},
+    height=380,
+    polar=dict(
+        bgcolor='rgba(0,0,0,0)',
+        radialaxis=dict(
+            visible=True,
+            range=[0, 1],
+            gridcolor='#1e2130',
+            tickfont=dict(color='#5a5f78', size=9)
+        ),
+        angularaxis=dict(
+            gridcolor='#1e2130',
+            tickfont=dict(color='#e8eaf2', size=11)
         )
     )
-    st.plotly_chart(fig_radar, use_container_width=True, config={"displayModeBar": False})
+)
+
+st.plotly_chart(fig_radar, use_container_width=True, config={"displayModeBar": False})
 
     # ── Full data table ──
     st.markdown('<div class="section-title">Complete Measurement Table · Tables 5.7 + 5.8</div>', unsafe_allow_html=True)
