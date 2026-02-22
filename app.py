@@ -1009,11 +1009,11 @@ elif page == "🧪 PhD Experimental Data":
             angularaxis=dict(
                 gridcolor='#1e2130',
                 tickfont=dict(color='#e8eaf2', size=11)
+            )
         )
     )
-)
 
-st.plotly_chart(fig_radar, use_container_width=True, config={"displayModeBar": False})
+    st.plotly_chart(fig_radar, use_container_width=True, config={"displayModeBar": False})
 
 # ── Full data table ──
 st.markdown('<div class="section-title">Complete Measurement Table · Tables 5.7 + 5.8</div>', unsafe_allow_html=True)
